@@ -17,12 +17,12 @@
 
 ## Architecture Pattern
 
-- **Server-Side Rendering (SSR)** with Next.js App Router
+- **Single Page Application (SPA)** with Next.js App Router and client-side routing
 - **Component-based architecture** using React functional components
 - **Atomic design methodology** for UI component organization
 - **API-first approach** with RESTful endpoints
 - **Middleware-based authentication** and authorization
-- **Database-per-tenant** isolation strategy
+- **Single database** with tenant-based data isolation via foreign keys
 - **Event-driven updates** for real-time collaboration
 
 ---
@@ -86,14 +86,23 @@
 
 ## Authentication Process
 
-- **User registration/login** via Clerk (email, Google, Facebook)
+- **User login only** via Clerk (email, Google, Facebook) - no registration allowed
 - **JWT token generation** and validation
 - **Middleware authentication** on protected routes
 - **Role assignment** (Admin/Normal) stored in database
-- **Tenant association** established during onboarding
+- **Tenant association** pre-established via seed data
 - **Multi-site access** based on user permissions
 - **Session management** with automatic token refresh
 - **Logout** with token invalidation and state cleanup
+
+## Data Initialization
+
+- **Built-in seed action** that runs on initial application setup
+- **Mock data generation** for tenants, users, sites, and content
+- **Pre-configured sample tenants** with realistic demo data
+- **Sample user accounts** with various roles and permissions
+- **Demo sites and pages** with placeholder content
+- **Asset library** populated with sample images and files
 
 ---
 
@@ -102,7 +111,6 @@
 ### Public Routes
 - `/` - Landing page
 - `/sign-in` - Authentication page
-- `/sign-up` - User registration
 
 ### Protected Routes
 - `/dashboard` - Root tenant dashboard (Admin only)
@@ -171,10 +179,20 @@
 
 ### Core Tables
 
+**companies**
+- id (UUID, Primary Key)
+- name (String)
+- slug (String, Unique)
+- industry (String)
+- website (String)
+- created_at (Timestamp)
+- updated_at (Timestamp)
+
 **tenants**
 - id (UUID, Primary Key)
 - name (String)
 - slug (String, Unique)
+- company_id (UUID, Foreign Key → companies.id)
 - created_at (Timestamp)
 - updated_at (Timestamp)
 
@@ -203,13 +221,26 @@
 - content (JSON)
 - status (Enum: DRAFT, PUBLISHED, ARCHIVED)
 - site_id (UUID, Foreign Key → sites.id)
+- tenant_id (UUID, Foreign Key → tenants.id)
 - created_by (UUID, Foreign Key → users.id)
 - created_at (Timestamp)
 - updated_at (Timestamp)
 
+**page_versions**
+- id (UUID, Primary Key)
+- page_id (UUID, Foreign Key → pages.id)
+- version_number (Integer)
+- title (String)
+- content (JSON)
+- status (Enum: DRAFT, PUBLISHED, ARCHIVED)
+- created_by (UUID, Foreign Key → users.id)
+- created_at (Timestamp)
+- is_current (Boolean)
+
 **navigation**
 - id (UUID, Primary Key)
 - site_id (UUID, Foreign Key → sites.id)
+- tenant_id (UUID, Foreign Key → tenants.id)
 - structure (JSON)
 - updated_at (Timestamp)
 
@@ -220,15 +251,30 @@
 - file_type (String)
 - file_size (Integer)
 - site_id (UUID, Foreign Key → sites.id)
+- tenant_id (UUID, Foreign Key → tenants.id)
 - uploaded_by (UUID, Foreign Key → users.id)
 - created_at (Timestamp)
 
 **themes**
 - id (UUID, Primary Key)
 - site_id (UUID, Foreign Key → sites.id)
+- tenant_id (UUID, Foreign Key → tenants.id)
 - primary_color (String)
 - secondary_color (String)
 - custom_css (Text)
+- updated_at (Timestamp)
+
+**tenant_licenses**
+- id (UUID, Primary Key)
+- tenant_id (UUID, Foreign Key → tenants.id)
+- license_type (Enum: BASIC, PREMIUM, ENTERPRISE)
+- max_sites (Integer)
+- max_users (Integer)
+- max_storage_gb (Integer)
+- start_date (Date)
+- end_date (Date)
+- is_active (Boolean)
+- created_at (Timestamp)
 - updated_at (Timestamp)
 
 **site_users** (Many-to-Many)
@@ -238,9 +284,16 @@
 - created_at (Timestamp)
 
 ### Relationships
+- **companies** → **tenants** (One-to-Many)
+- **tenants** → **tenant_licenses** (One-to-Many)
 - **tenants** → **users** (One-to-Many)
 - **tenants** → **sites** (One-to-Many)
+- **tenants** → **pages** (One-to-Many)
+- **tenants** → **assets** (One-to-Many)
+- **tenants** → **navigation** (One-to-Many)
+- **tenants** → **themes** (One-to-Many)
 - **sites** → **pages** (One-to-Many)
+- **pages** → **page_versions** (One-to-Many)
 - **sites** → **assets** (One-to-Many)
 - **sites** → **navigation** (One-to-One)
 - **sites** → **themes** (One-to-One)
