@@ -1,5 +1,5 @@
 # Software Requirements Specification
-## Stand Alone - SaaS Intranet Solution
+## ShortPoint Standalone - SaaS Intranet Solution
 
 ---
 
@@ -86,14 +86,31 @@
 
 ## Authentication Process
 
-- **User login only** via Clerk (email, Google, Facebook) - no registration allowed
+- **User registration and login** via Clerk (email, Google, Facebook)
 - **JWT token generation** and validation
 - **Middleware authentication** on protected routes
 - **Role assignment** (Admin/Normal) stored in database
-- **Tenant association** pre-established via seed data
+- **Domain-based tenant assignment** via email domain matching
 - **Multi-site access** based on user permissions
 - **Session management** with automatic token refresh
 - **Logout** with token invalidation and state cleanup
+
+### Tenant Assignment Strategy
+
+**Domain-based Assignment**: Users are automatically assigned to tenants based on their email domain using the following matching logic:
+
+1. **Direct Domain Match**: Company website contains user's email domain
+   - Example: `user@company.com` → tenant with company.website containing "company.com"
+
+2. **Slug-based Match**: Tenant slug matches converted email domain
+   - Example: `user@my-company.com` → tenant with slug "my-company-com"
+
+3. **Company Name Match**: Company name contains the domain name
+   - Example: `user@acme.com` → tenant with company name containing "acme"
+
+4. **Fallback Assignment**: If no domain match found, assign to first available tenant
+
+**Webhook Processing**: Clerk user creation events trigger automatic user record creation in database with appropriate tenant assignment.
 
 ## Data Initialization
 

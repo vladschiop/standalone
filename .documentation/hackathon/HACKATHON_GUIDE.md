@@ -192,4 +192,4 @@ Good luck, and happy coding! 🚀
 
 ---
 
-*Generated for the Stand Alone SaaS Intranet Solution Hackathon*
+*Generated for the ShortPoint Standalone SaaS Intranet Solution Hackathon*

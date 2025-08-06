@@ -10,13 +10,15 @@ This document outlines the recommended folder structure for our multi-tenant Saa
 standalone/
 ├── src/
 │   ├── app/                          # App Router (Next.js 14+)
-│   │   ├── (tenant)/                 # Route group for tenant-specific routes
+│   │   ├── (tenant)/                 # Route group for tenant-level routes (authenticated)
 │   │   │   ├── dashboard/
 │   │   │   │   ├── page.tsx
 │   │   │   │   ├── sites/
 │   │   │   │   ├── tenant-config/
 │   │   │   │   ├── licensing/
 │   │   │   │   └── support/
+│   │   │   └── layout.tsx
+│   │   ├── (site)/                   # Route group for site-level routes (authenticated)
 │   │   │   ├── sites/
 │   │   │   │   └── [siteId]/
 │   │   │   │       ├── page.tsx
@@ -27,15 +29,14 @@ standalone/
 │   │   │   │       ├── team/
 │   │   │   │       ├── theme/
 │   │   │   │       └── settings/
+│   │   │   ├── s/                    # Public site viewing (authenticated users only)
+│   │   │   │   └── [siteSlug]/
+│   │   │   │       ├── page.tsx
+│   │   │   │       └── [pageSlug]/
 │   │   │   └── layout.tsx
-│   │   ├── (public)/                 # Route group for public routes
-│   │   │   ├── sign-in/
-│   │   │   │   └── page.tsx
-│   │   │   └── layout.tsx
-│   │   ├── s/                        # Public site routes
-│   │   │   └── [siteSlug]/
-│   │   │       ├── page.tsx
-│   │   │       └── [pageSlug]/
+│   │   ├── sign-in/                  # Authentication route (no route group)
+│   │   │   └── [[...rest]]/
+│   │   │       └── page.tsx
 │   │   ├── api/                      # API routes
 │   │   │   ├── auth/
 │   │   │   │   ├── user/
@@ -123,6 +124,7 @@ standalone/
 │   ├── migrations/
 │   └── seed.ts
 ├── public/
+│   ├── shortpoint-logo.svg             # Main application logo (used in sidebar navigation)
 │   ├── images/
 │   │   ├── logos/
 │   │   └── placeholders/
@@ -148,8 +150,9 @@ standalone/
 - Keep `page.tsx`, `layout.tsx`, and `loading.tsx` files at appropriate levels
 
 ### 2. Route Groups
-- `(tenant)`: Protected routes requiring authentication and tenant context
-- `(public)`: Public routes accessible without authentication
+- `(tenant)`: Tenant-level protected routes requiring authentication (dashboard, tenant config, etc.)
+- `(site)`: Site-level protected routes requiring authentication (site management, public site viewing)
+- All routes require authentication - no public access
 - Groups don't affect URL structure but provide logical organization
 
 ### 3. Component Organization
@@ -245,9 +248,10 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 - Pass tenant ID to all database queries
 
 ### Route Protection
-- Implement tenant-aware middleware
+- All routes require authentication except `/sign-in`
+- Implement tenant-aware middleware for all authenticated routes
 - Validate user access to tenant resources
-- Handle subdomain routing for tenant isolation
+- Site viewing (`/s/[siteSlug]`) requires authentication but allows cross-tenant access
 
 ### Data Isolation
 - Use tenant_id in all database queries
@@ -266,5 +270,9 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 - Create multiple tenants with different configurations
 - Include sample users, sites, pages, and assets
 - Maintain referential integrity in seed data
+- **Required Company**: Include a company called "ShortPoint" for Clerk login integration
+  - Company domain: "shortpoint.com" 
+  - Used for domain-based tenant assignment logic
+  - Test Gmail accounts should use @shortpoint domain for proper tenant association
 
 This structure promotes scalability, maintainability, and follows modern Next.js 14+ best practices for multi-tenant SaaS applications.

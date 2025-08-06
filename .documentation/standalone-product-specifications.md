@@ -1,8 +1,8 @@
-# Stand Alone - Product Requirements Document
+# ShortPoint Standalone - Product Requirements Document
 
 ## 1. Elevator Pitch
 
-Stand Alone is a SaaS intranet solution designed for small to medium businesses that need to organize departmental information and create custom sites for different teams. Similar to Wix for hosting, Stand Alone allows companies to create multiple sites from a single tenant, where each department (HR, Finance, IT, Development, Sales) can have their own dedicated site with controlled access. Administrators can manage sites from a central dashboard at the tenant level, and also manage specific site settings, pages, themes, and assets at the individual site level.
+ShortPoint Standalone is a SaaS intranet solution designed for small to medium businesses that need to organize departmental information and create custom sites for different teams. Similar to Wix for hosting, ShortPoint Standalone allows companies to create multiple sites from a single tenant, where each department (HR, Finance, IT, Development, Sales) can have their own dedicated site with controlled access. Administrators can manage sites from a central dashboard at the tenant level, and also manage specific site settings, pages, themes, and assets at the individual site level.
 
 ## 2. Who is this app for
 

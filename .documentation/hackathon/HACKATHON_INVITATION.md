@@ -63,7 +63,7 @@ All the specifications will be delivered at the start of the hackathon.
 
 ## 👥 Registered Teams
 
-### Participating Teams for Stand Alone Hackathon
+### Participating Teams for ShortPoint Standalone Hackathon
 
 1. **Team 1**: @serban + @ouis
 2. **Team 2**: @Ebubekir + @steve

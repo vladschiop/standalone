@@ -1,5 +1,5 @@
 # User Interface Design Document
-## Stand Alone - SaaS Intranet Solution
+## ShortPoint Standalone - SaaS Intranet Solution
 
 ---
 
@@ -28,8 +28,19 @@
 
 ## Core Components
 
+### Branding & Logo
+- **Application Logo**: Located at `/public/shortpoint-logo.svg`
+  - Used in sidebar navigation header (160px width, 32px height)
+  - SVG format for scalability and quality
+  - Primary brand colors: #3161D1 (ShortPoint blue) and #474F65 (secondary text)
+  - Links to main dashboard when clicked
+
 ### Navigation Components
 - **Primary Left Navigation**: Fixed sidebar with menu items (Sites, Navigation, Pages, Assets Library, Site Team, Theme, Settings)
+  - **Active State**: Light Blue background (#E7F5FF) with Primary Blue text (#3161D1), no borders or border radius
+  - **Non-Active State**: Secondary Blue text (#5774A8) with no background, no borders or border radius
+  - **Hover State**: Light Blue background with 50% opacity, Primary Blue text (#3161D1), no borders or border radius
+  - **Font Size**: 12px with 14px line-height, Inter font family
 - **Horizontal Site Navigation**: Configurable top navigation bar with custom links and styling
 - **Breadcrumb Navigation**: Contextual path indicator showing current location
 
