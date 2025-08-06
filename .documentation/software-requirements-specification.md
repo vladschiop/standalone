@@ -129,14 +129,14 @@
 - `/` - Landing page
 - `/sign-in` - Authentication page
 
-### Protected Routes
+### Dashboard Protected Routes
 - `/dashboard` - Root tenant dashboard (Admin only)
 - `/dashboard/sites` - Site collections overview
 - `/dashboard/tenant-config` - Tenant configuration
 - `/dashboard/licensing` - Licensing management
 - `/dashboard/support` - Support contact
 
-### Site-Level Routes
+### Site-Level Protected Routes
 - `/sites/[siteId]` - Site configuration dashboard
 - `/sites/[siteId]/navigation` - Navigation structure editor
 - `/sites/[siteId]/pages` - Pages management table
@@ -145,10 +145,6 @@
 - `/sites/[siteId]/team` - Site team management
 - `/sites/[siteId]/theme` - Theme customization
 - `/sites/[siteId]/settings` - Site-specific settings
-
-### Public Site Routes
-- `/s/[siteSlug]` - Public site homepage
-- `/s/[siteSlug]/[pageSlug]` - Public site pages
 
 ---
 
