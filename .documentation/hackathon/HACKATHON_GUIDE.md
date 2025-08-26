@@ -14,7 +14,7 @@
 - **Real-time collaboration** features for content editing
 
 ### Key User Flows
-1. **Admin Flow**: Login → Dashboard → Create/Manage Sites → Configure Navigation → Create Pages → Customize Themes
+1. **Admin Flow**: Login → Dashboard → Create/Manage Sites → Configure Navigation → Create Pages → Customize Themes (Implementation focus should be on the Admin Flow)
 2. **Normal User Flow**: Login → Access Assigned Sites → View Content → Interact with Resources
 
 ## 🏗️ Technical Architecture
@@ -26,7 +26,7 @@
 - **Authentication**: Clerk (email, Google, Facebook SSO)
 - **State Management**: Zustand stores + TanStack Query
 - **Storage**: Supabase Storage for assets
-- **Deployment**: Vercel
+- **Deployment**: Vercel (This is not a mandatory step)
 
 ** Use  @software-requirements-specifications.md as full sofwtaware specifications for the product
 
