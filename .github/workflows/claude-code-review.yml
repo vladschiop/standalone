@@ -49,7 +49,7 @@ jobs:
             3. Add a general review comment with overall thoughts
             4. (Very Important) Add inline comments for specific lines of code that need attention. 
             5. Use `gh pr diff` to examine the changes and identify specific issues
-            6. For inline comments on specific lines, use: `gh pr review --comment --body "Your comment here"`
+            6. For inline comments on specific lines, use: `gh pr review --comment --body "Your comment here"`. Make sure you specify the line number so it will appear inline.
             7. For general feedback, use:  `gh pr comment --body "Your overall review here"`
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://docs.anthropic.com/en/docs/claude-code/sdk#command-line for available options
