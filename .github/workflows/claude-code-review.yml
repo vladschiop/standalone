@@ -23,6 +23,7 @@ jobs:
       contents: read
       pull-requests: read
       issues: read
+      actions: read
       id-token: write
     
     steps:
@@ -36,9 +37,8 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
-            Please review this pull request and provide constructive feedback as a comment.
+            Please review this pull request and provide constructive feedback as a comment and also inline comments on specific lines in the diff.
             
             Focus your review on:
             - Code quality and best practices
@@ -53,8 +53,8 @@ jobs:
             2. Key strengths (if any)
             3. Areas for improvement with specific line references
             4. Suggestions for enhancement
-            Be constructive and helpful in your feedback and also add inline comments for specific lines in the diff.
-          claude_args: |
-              --allowedTools "mcp__github__create_pending_pull_request_review,mcp__github__add_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"  
-          # Optional: Add claude_args to customize behavior and configuration
-          # See https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html#intro-adhoc
+
+            Provide specific, actionable feedback. Use inline comments for line-specific issues and include an overall summary when submitting the review. **Important**: Submit as "COMMENT" type so the review doesn't block the PR.
+            Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR. 
+        
+        claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
