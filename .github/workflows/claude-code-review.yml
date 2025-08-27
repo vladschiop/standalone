@@ -53,5 +53,8 @@ jobs:
             2. Key strengths (if any)
             3. Areas for improvement with specific line references
             4. Suggestions for enhancement
-            
             Be constructive and helpful in your feedback and also add inline comments for specific lines in the diff.
+          claude_args: |
+              --allowedTools "mcp__github__create_pending_pull_request_review,mcp__github__add_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"  
+          # Optional: Add claude_args to customize behavior and configuration
+          # See https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html#intro-adhoc
