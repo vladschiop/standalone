@@ -17,15 +17,14 @@ jobs:
     #   github.event.pull_request.user.login == 'external-contributor' ||
     #   github.event.pull_request.user.login == 'new-developer' ||
     #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
-    
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
       issues: read
-      actions: read
       id-token: write
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,23 +37,16 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
-            Please review this pull request and provide constructive feedback as a comment and also inline comments on specific lines in the diff.
-            
-            Focus your review on:
+            Please review this pull request and provide feedback on:
             - Code quality and best practices
-            - Potential bugs or security issues
+            - Potential bugs or issues
             - Performance considerations
-            - Maintainability and readability
-            - Architecture and design decisions
-            - TypeScript usage and type safety
+            - Security concerns
+            - Test coverage
             
-            Analyze the diff and provide specific, actionable feedback. Structure your review with:
-            1. Overall assessment
-            2. Key strengths (if any)
-            3. Areas for improvement with specific line references
-            4. Suggestions for enhancement
-
-            Provide specific, actionable feedback. Use inline comments for line-specific issues and include an overall summary when submitting the review. **Important**: Submit as "COMMENT" type so the review doesn't block the PR.
-            Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR. 
-        
-        claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
+            Use the repository's CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
+            Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.
+          
+          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # or https://docs.anthropic.com/en/docs/claude-code/sdk#command-line for available options
+          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
