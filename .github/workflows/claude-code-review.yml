@@ -1,40 +1,56 @@
-name: Claude PR Auto Review
+name: Claude Code Review
 
 on:
   pull_request:
     types: [opened, synchronize]
+    # Optional: Only run on specific file changes
+    # paths:
+    #   - "src/**/*.ts"
+    #   - "src/**/*.tsx"
+    #   - "src/**/*.js"
+    #   - "src/**/*.jsx"
 
 jobs:
-  auto-review:
+  claude-review:
+    # Optional: Filter by PR author
+    # if: |
+    #   github.event.pull_request.user.login == 'external-contributor' ||
+    #   github.event.pull_request.user.login == 'new-developer' ||
+    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
+      issues: read
       id-token: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: Automatic PR Review
-        uses: anthropics/claude-code-action@v1-dev
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
-            Please review this pull request and provide comprehensive feedback.
-
-            Focus on:
+            Please review this pull request and provide feedback on:
             - Code quality and best practices
             - Potential bugs or issues
             - Performance considerations
-            - Security implications
+            - Security concerns
             - Test coverage
-            - Documentation updates if needed
-            - Verify that README.md and docs are updated for any new features or config changes
-
-            Provide constructive feedback with specific suggestions for improvement.
-            Use inline comments to highlight specific areas of concern.
-
-          claude_args: |
-            --allowedTools "mcp__github__create_pending_pull_request_review,mcp__github__add_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
+            
+            1. Use the repository's CLAUDE.md for guidance on style and conventions. 
+            2. Be constructive and helpful in your feedback. 
+            3. Add a general review comment with overall thoughts
+            4. (Very Important) Add inline comments for specific lines of code that need attention. 
+            5. Use `gh pr diff` to examine the changes and identify specific issues
+            6. For inline comments on specific lines, use: `gh pr review --comment --body "Your comment here"`
+            7. For general feedback, use:  `gh pr comment --body "Your overall review here"`
+          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # or https://docs.anthropic.com/en/docs/claude-code/sdk#command-line for available options
+          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
