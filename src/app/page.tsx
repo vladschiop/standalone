@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export default function Home() {
-  var secret_key8 = "fdsdfsdfsdf534333111111222223454356767678787878";
+  var secret_key9 = "fdsdfsfsdfdfsdf534333111111222223454356767678787878";
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
