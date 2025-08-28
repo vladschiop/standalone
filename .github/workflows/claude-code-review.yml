@@ -31,6 +31,22 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: List installed apps
+        run: |
+          echo "=== System Info ==="
+          uname -a
+          echo "=== Installed packages (apt) ==="
+          apt list --installed 2>/dev/null | head -20
+          echo "=== Snap packages ==="
+          snap list 2>/dev/null || echo "snap not available"
+          echo "=== GitHub CLI ==="
+          which gh || echo "gh not found"
+          gh --version || echo "gh version failed"
+          echo "=== Available gh commands ==="
+          compgen -c | grep gh || echo "No gh commands found"
+          echo "=== Environment variables ==="
+          env | grep -i github | head -10
+
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@v1
